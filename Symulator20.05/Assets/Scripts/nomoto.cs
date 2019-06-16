@@ -25,7 +25,7 @@ public class nomoto : MonoBehaviour
     public float z = 0.0f;
     public float ROT = 0.0f;
     public float COG = 0.0f;
-    public float COGv2;
+    public float COG2;
     float K = 0.07f;
 
     public float sigmaR = 0.0f;
@@ -52,27 +52,29 @@ public class nomoto : MonoBehaviour
         turnS = GetComponent<Slider>();
 
     }
+
     void Update()
     {
-        
         sigmaR = Mathf.MoveTowards(sigmaR, turn, 2.96f * Time.deltaTime);                                     //zakładamy podstawy ruchu
         actualSpeed = Mathf.MoveTowards(actualSpeed, speed / 100 * maxSpeed, 0.15f * Time.deltaTime);
         if (actualSpeed != 0)
         {
             ROT += (K * (sigmaR) - ROT) * Time.deltaTime;
             COG += ROT * Time.deltaTime;
+
             x += actualSpeed * Time.deltaTime * Mathf.Sin(COG * Mathf.PI / 180);
             z += actualSpeed * Time.deltaTime * Mathf.Cos(COG * Mathf.PI / 180);
+
             transform.position = new Vector3(x, y, z);
             transform.rotation = Quaternion.Euler(0, COG, 0);
-
             kn = (actualSpeed) * 1.9438f; 
+
             speedI.text = kn.ToString("0.0");
             rudderA.text = sigmaR.ToString("0");
             speedP.text = speed.ToString("0");
             turnP.text = turn.ToString("0");
-            COGv2 = COG % 360;
-            cogV.text = COGv2.ToString("0.00");
+            COG2 = COG % 360;
+            cogV.text = COG2.ToString("0.00");
         }
     }
 }
